@@ -60,6 +60,7 @@ def DividerNode(state: dict):
     ]
     response = llm_gemini.invoke(messages)
     distributedWork = extract_json(response.content)
+    print(distributedWork)
     return {
         "DistributedWork": distributedWork
     }
@@ -67,7 +68,7 @@ def DividerNode(state: dict):
 def WorkerNode(state:dict):
     task=state["currentTask"]
     messages = [
-        SystemMessage(content="You are a worker node.ONLY answer the assigned task.Do NOT summarize other areas.Do NOT provide conclusions.Return concise, focused output."),
+        SystemMessage(content="You are a research assistant. The user will provide a topic or a section of text. Your task is to expand on it, polish it, and provide a detailed explanation. Return the refined content."),
         HumanMessage(content=task)
     ]
     result = llm_gemini.invoke(messages)
@@ -91,10 +92,11 @@ def route_to_workers(state: dict):
 
 
 def finalNode(state:dict):
+    print(f"DEBUG: worker_outputs keys: {list(state['worker_outputs'].keys())}")
     combinedReport = "\n\n".join(
-        msg.content for msg in state["WorkerNodes"]
+        f"--- {key} ---\n{content}" for key, content in state["worker_outputs"].items()
     )
-    print(f" The Final Output: {combinedReport}")
+    print(f" The Final Output: \n{combinedReport}")
 
 
 
