@@ -26,26 +26,32 @@ useDocument = input("Do you want to use a document for research? (yes/no): ")
 
 if(useDocument.lower() == "yes"):
     try:
+        print("\nMake Sure you Have Docker installed on your System!!")
+        print("\nRunning the docker script to load Qdrant DB")
+        subprocess.run(docker_command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        print("\nDocker Compose file executed successfully.")
+        
+        print("\nLoading the Document , Running Required Scripts: \n")
+        import sys
+        subprocess.run([sys.executable, "documentLoader.py"], capture_output=True, text=True, check=True)
+        
         embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
 
         vector_db = QdrantVectorStore.from_existing_collection(
             embedding=embeddings,
             url = "http://localhost:6333",
-        collection_name="DocumentsforAI"
+            collection_name="DocumentsforAI"
         )
-        print("\nMake Sure you Have Docker installed on your System!!")
-        print("\nRunning the docker script to load Qdrant DB")
-        subprocess.run(docker_command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        print("\nDocker Compose file executed successfully.")
-        print("\nLoading the Document , Running Required Scripts: \n")
-        subprocess.run(["python","documentLoader.py"],capture_output=True,text=True,check=True)
 
     except subprocess.CalledProcessError as e:
         print(f"An error occurred while running Docker Compose or RAG System : {e.stderr}")
+        exit(1)
     except FileNotFoundError:
         print(f"Error: The command 'docker' was not found. Please ensure Docker is installed and in your system's PATH.")
+        exit(1)
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+        exit(1)
 
 
 
