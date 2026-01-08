@@ -3,7 +3,6 @@
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-Orchestration-orange)](https://langchain-ai.github.io/langgraph/)
 [![Gemini](https://img.shields.io/badge/AI-Gemini%202.5%20Flash-8E75B2)](https://deepmind.google/technologies/gemini/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 **AI-Team** is a sophisticated multi-agent research system built with **LangGraph** and **Google Gemini**. It emulates a professional research team structure—with a "Head" node acting as a coordinator and multiple "Worker" nodes executing specialized sub-tasks—to deliver comprehensive answers to complex user queries.
 
